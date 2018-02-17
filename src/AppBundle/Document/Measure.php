@@ -93,5 +93,235 @@ class Measure
      * Screen name of the screenview hit.
      */
     protected $sn;
-    
 
+
+    /**
+     * Get id
+     *
+     * @return id $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set v
+     *
+     * @param int $v
+     * @return $this
+     */
+    public function setV($v)
+    {
+        $this->v = $v;
+        return $this;
+    }
+
+    /**
+     * Get v
+     *
+     * @return int $v
+     */
+    public function getV()
+    {
+        return $this->v;
+    }
+
+    /**
+     * Set t
+     *
+     * @param string $t
+     * @return $this
+     */
+    public function setT($t)
+    {
+        $this->t = $t;
+        return $this;
+    }
+
+    /**
+     * Get t
+     *
+     * @return string $t
+     */
+    public function getT()
+    {
+        return $this->t;
+    }
+
+    /**
+     * Set dl
+     *
+     * @param string $dl
+     * @return $this
+     */
+    public function setDl($dl)
+    {
+        $this->dl = $dl;
+        return $this;
+    }
+
+    /**
+     * Get dl
+     *
+     * @return string $dl
+     */
+    public function getDl()
+    {
+        return $this->dl;
+    }
+
+    /**
+     * Set dr
+     *
+     * @param string $dr
+     * @return $this
+     */
+    public function setDr($dr)
+    {
+        $this->dr = $dr;
+        return $this;
+    }
+
+    /**
+     * Get dr
+     *
+     * @return string $dr
+     */
+    public function getDr()
+    {
+        return $this->dr;
+    }
+
+    /**
+     * Set wct
+     *
+     * @param string $wct
+     * @return $this
+     */
+    public function setWct($wct)
+    {
+        $this->wct = $wct;
+        return $this;
+    }
+
+    /**
+     * Get wct
+     *
+     * @return string $wct
+     */
+    public function getWct()
+    {
+        return $this->wct;
+    }
+
+    /**
+     * Set wui
+     *
+     * @param string $wui
+     * @return $this
+     */
+    public function setWui($wui)
+    {
+        $this->wui = $wui;
+        return $this;
+    }
+
+    /**
+     * Get wui
+     *
+     * @return string $wui
+     */
+    public function getWui()
+    {
+        return $this->wui;
+    }
+
+    /**
+     * Set wuui
+     *
+     * @param string $wuui
+     * @return $this
+     */
+    public function setWuui($wuui)
+    {
+        $this->wuui = $wuui;
+        return $this;
+    }
+
+    /**
+     * Get wuui
+     *
+     * @return string $wuui
+     */
+    public function getWuui()
+    {
+        return $this->wuui;
+    }
+
+    /**
+     * Set tid
+     *
+     * @param string $tid
+     * @return $this
+     */
+    public function setTid($tid)
+    {
+        $this->tid = $tid;
+        return $this;
+    }
+
+    /**
+     * Get tid
+     *
+     * @return string $tid
+     */
+    public function getTid()
+    {
+        return $this->tid;
+    }
+
+    /**
+     * Set ds
+     *
+     * @param string $ds
+     * @return $this
+     */
+    public function setDs($ds)
+    {
+        $this->ds = $ds;
+        return $this;
+    }
+
+    /**
+     * Get ds
+     *
+     * @return string $ds
+     */
+    public function getDs()
+    {
+        return $this->ds;
+    }
+
+    /**
+     * Set sn
+     *
+     * @param string $sn
+     * @return $this
+     */
+    public function setSn($sn)
+    {
+        $this->sn = $sn;
+        return $this;
+    }
+
+    /**
+     * Get sn
+     *
+     * @return string $sn
+     */
+    public function getSn()
+    {
+        return $this->sn;
+    }
+}
