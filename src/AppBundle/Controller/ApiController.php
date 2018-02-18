@@ -16,6 +16,7 @@ class ApiController extends Controller
 {
     /**
      * @Route("/collect")
+     * Persist a measure on valid GET/POST request
      */
     public function collectAction(Request $request)
     {
@@ -58,10 +59,10 @@ class ApiController extends Controller
         }
 
         if($valid){
-            return new Response("OK");
+            return new Response("HTTP 200 OK", Response::HTTP_OK);
         }else{
             $err = $this->container->get('jms_serializer')->serialize($errors, 'json');
-            return new Response($err);
+            return new Response($err, Response::HTTP_BAD_REQUEST);
         }
     }
 
