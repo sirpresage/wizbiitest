@@ -17,6 +17,8 @@ class Measure
         }
     }
 
+    const MAX_QT = 3600;
+
     /**
      * @MongoDB\Id
      */
@@ -110,6 +112,18 @@ class Measure
      * Screen name of the screenview hit. Mandatory for screenviews on mobile.
      */
     protected $sn;
+
+    /**
+     * @MongoDB\Field(type="int")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = Measure::MAX_QT,
+     *      minMessage = "Value should atleast be {{ limit }}",
+     *      maxMessage = "Value cannot be greater than {{ limit }}"
+     * )
+     * Queue time in milliseconds
+     */
+    protected $qt;
 
     /**
      * @var boolean
@@ -344,6 +358,28 @@ class Measure
     public function getSn()
     {
         return $this->sn;
+    }
+
+    /**
+     * Set qt
+     *
+     * @param int $qt
+     * @return $this
+     */
+    public function setQt($qt)
+    {
+        $this->qt = $qt;
+        return $this;
+    }
+
+    /**
+     * Get qt
+     *
+     * @return int $qt
+     */
+    public function getQt()
+    {
+        return $this->qt;
     }
 
      /**
