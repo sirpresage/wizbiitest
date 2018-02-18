@@ -71,7 +71,7 @@ doctrine_mongodb:
         default:
             server: "%mongodb_server%"
             options: {}
-    default_database: wizbii_db
+    default_database: "%mongodb_database%"
     document_managers:
         default:
             auto_mapping: true
