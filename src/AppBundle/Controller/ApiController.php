@@ -23,21 +23,7 @@ class ApiController extends Controller
         $mobileDetector = $this->get('mobile_detect.mobile_detector');
 
         if($request->getMethod() === "GET") {
-            $measure = new Measure($request->query->all());
-            
-            //Check device type, note that a tablet is treated as a mobile device
-            $measure->setIsMobile($mobileDetector->isMobile());
-
-            $validator = $this->get('validator');
-            $dm = $this->get('doctrine_mongodb')->getManager();
-            $errors = $validator->validate($measure);
-            if(count($errors) == 0) {
-                $dm->persist($measure);
-                $dm->flush();
-                return new Response("OK");
-            } else{
-                return new Response($errors);
-            }
+            $measures[] = new Measure($request->query->all());
         } elseif($request->getMethod() === "POST") {
             $encoders = array(new JsonEncoder());
             $normalizers = array(new ArrayDenormalizer(), new ObjectNormalizer());
@@ -45,35 +31,38 @@ class ApiController extends Controller
  
             $measures = $serializer->deserialize($request->getContent(), 'AppBundle\Document\Measure[]', 'json');
 	    
-            $valid=true;
-	    foreach($measures as $measure) {
-		$validator = $this->get('validator');
-		$dm = $this->get('doctrine_mongodb')->getManager();
-		$err = $validator->validate($measure);
-		
-		if(count($err) == 0) {
-		    $dm->persist($measure);
-		    $dm->flush();
-		    
-		} else{
-                    $valid=false;
-		    $errors[] = $err;
-		}
-           }
 
-            if($valid){
-                return new Response("OK POST");
-            }else{
-                $err = $this->container->get('jms_serializer')->serialize($errors, 'json');
-                return new Response($err);
-            }
         } else {
             return $this->render('@App/Api/collect.html.twig', array(
                 // ...
             ));
         } 
 
+        $valid=true;
+        foreach($measures as $measure) {
+	    $validator = $this->get('validator');
+	    $dm = $this->get('doctrine_mongodb')->getManager();
 
+	    //Check device type, note that a tablet is treated as a mobile device
+    	    $measure->setIsMobile($mobileDetector->isMobile());
+
+	    $err = $validator->validate($measure);
+	
+	    if(count($err) == 0) {
+	        $dm->persist($measure);
+	        $dm->flush();   
+            } else{
+                $valid=false;
+	        $errors[] = $err;
+	    }
+        }
+
+        if($valid){
+            return new Response("OK");
+        }else{
+            $err = $this->container->get('jms_serializer')->serialize($errors, 'json');
+            return new Response($err);
+        }
     }
 
 }
