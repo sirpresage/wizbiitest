@@ -58,7 +58,9 @@ class Measure
     
     /**
      * @MongoDB\Field(type="string")
-     * @Assert\Choice({"profile", "recruiter", "visitor", "wizbii_employee"})
+     * @Assert\Expression(
+     *     "value in ['profile', 'recruiter', 'visitor', 'wizbii_employee'] or !this.getIsMobile()",
+     * )
      * Wizbii creator type. Mandatory for mobile hits. 
      * For web hits, this value can be read from wizbii cookies (not implemented yet)
      */
@@ -66,6 +68,9 @@ class Measure
     
     /**
      * @MongoDB\Field(type="string")
+     * @Assert\Expression(
+     *     "value != '' or !this.getIsMobile()",
+     * )
      * Wizbii user id. Mandatory for mobile hits. 
      * For web hits, this value can be read from wizbii cookies (not implemented yet)
      */
@@ -73,7 +78,10 @@ class Measure
     
     /**
      * @MongoDB\Field(type="string")
-     * Wizbii uniq user id. Mandatory for mobile hits. 
+     * @Assert\Expression(
+     *     "value != '' or this.getIsMobile()",
+     * )
+     * Wizbii uniq user id. Mandatory for web hits. 
      * For web hits, this value can be read from wizbii cookies (not implemented yet)
      */
     protected $wuui;
@@ -96,10 +104,17 @@ class Measure
     
     /**
      * @MongoDB\Field(type="string")
-     * Screen name of the screenview hit.
+     * @Assert\Expression(
+     *     "value != '' or !(this.getT() == 'screenview' and this.getIsMobile())",
+     * )
+     * Screen name of the screenview hit. Mandatory for screenviews on mobile.
      */
     protected $sn;
 
+    /**
+     * @var boolean
+     */
+    protected $isMobile;
 
     /**
      * Get id
@@ -330,4 +345,27 @@ class Measure
     {
         return $this->sn;
     }
+
+     /**
+     * Set isMobile
+     *
+     * @param boolean $isMobile
+     * @return $this
+     */
+    public function setIsMobile($isMobile)
+    {
+        $this->isMobile = $isMobile;
+        return $this;
+    }
+
+    /**
+     * Get isMobile
+     *
+     * @return boolean $isMobile
+     */
+    public function getIsMobile()
+    {
+        return $this->isMobile;
+    }
+
 }
