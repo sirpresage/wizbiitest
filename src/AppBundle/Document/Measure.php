@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Measure
 {
     
-    function __construct($params) {
+    function __construct($params = array()) {
         foreach($params as $key => $value) {
             $this->$key = $value;
         }
