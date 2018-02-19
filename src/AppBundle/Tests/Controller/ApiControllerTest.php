@@ -40,6 +40,34 @@ class ApiControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/collect?t=notavalidchoice');
         $this->assertEquals(Response::HTTP_BAD_REQUEST, $client->getResponse()->getStatusCode());
         $this->assertContains('{"property_path":"t","message":"The value you selected is not a valid choice."}', $client->getResponse()->getContent());
+
+        $crawler = $client->request('GET', '/collect?t=pageview');
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $client->getResponse()->getStatusCode());
+        $this->assertNotContains('{"property_path":"t"', $client->getResponse()->getContent());
+    }
+
+    public function testDl()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/collect?dl=noturl');
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $client->getResponse()->getStatusCode());
+        $this->assertContains('{"property_path":"dl","message":"The url \'\"noturl\"\' is not a valid url"}', $client->getResponse()->getContent());
+
+        $crawler = $client->request('GET', '/collect?dl=http%3A%2F%2Fwww.wizbii.com%2Fcompany%2Fwizbii');
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $client->getResponse()->getStatusCode());
+        $this->assertNotContains('{"property_path":"dl"', $client->getResponse()->getContent());
+    }
+
+    public function testDr()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/collect?dr=noturl');
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $client->getResponse()->getStatusCode());
+        $this->assertContains('{"property_path":"dr","message":"The url \'\"noturl\"\' is not a valid url"}', $client->getResponse()->getContent());
+
+        $crawler = $client->request('GET', '/collect?dr=http%3A%2F%2Fwww.jobijoba.com%2F/whatever');
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $client->getResponse()->getStatusCode());
+        $this->assertNotContains('{"property_path":"dr"', $client->getResponse()->getContent());
     }
 
     public function testWct()
@@ -49,7 +77,7 @@ class ApiControllerTest extends WebTestCase
         // Act as a mobile with bad parameters
         $client->request(
             'GET',
-            '/collect?v=1&ds=web&tid=UA-1234-5&t=pageview&wui=94760d4b3e58797ae1',
+            '/collect?wct=notvalidwct',
             array(),
             array(),
             array(
@@ -58,7 +86,7 @@ class ApiControllerTest extends WebTestCase
         );
 
         $this->assertEquals(Response::HTTP_BAD_REQUEST, $client->getResponse()->getStatusCode());
-        $this->assertContains("This value is not valid.", $client->getResponse()->getContent());
+        $this->assertContains('{"property_path":"wct","message":"This value is not valid."}', $client->getResponse()->getContent());
 
         // Act as a mobile with good parameters
         $client->request(
@@ -73,10 +101,10 @@ class ApiControllerTest extends WebTestCase
         
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        // Web request without wct shouldn't raise an error
+        // Web request with bad wct shouldn't raise an error
         $client->request(
             'GET',
-            '/collect?v=1&ds=web&tid=UA-1234-5&t=pageview&wuui=94760d4b3e58797ae1',
+            '/collect?v=1&ds=web&tid=UA-1234-5&t=pageview&wuui=94760d4b3e58797ae1&wct=notvalidwct',
             array(),
             array(),
             array(
